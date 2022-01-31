@@ -1,0 +1,44 @@
+.ezwindow_frame {
+    color: black;
+    background-color: lightgray;
+    box-shadow: 10px 10px 9px gray;
+    padding: 4px 4px 4px 4px; /* sets up the resizable window border */
+    border: 1px solid black; /* just for testing */
+    border-radius: 9px;
+}
+.ezwindow_titlebar {
+    color: white;
+    background-color: #000099;
+    text-align: center;
+    cursor: default;
+    height: 25px;
+    line-height: 25px; // this centers the text vertically
+    padding-left: 4px;
+    padding-right: 4px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px 1px 0px 1px;
+    border-radius: 9px 9px 0px 0px;
+}
+.ezwindow_contentarea {
+    color: black;
+    background-color: ghostwhite;
+    cursor: default;
+    border-style: solid;
+    border-color: black;
+    border-width: 0px 1px 1px 1px;
+    border-radius: 0px 0px 9px 9px;
+
+}
+.ezwindow_closebutton {
+    color: white;
+    font-family: sans-serif;
+    font-weight: bold;
+    background-color: #000099;
+    border: none;
+    border-radius:50%;
+    margin-top: 4px; // keeps it centered vertically
+}
+.ezwindow_closebutton:hover {
+    background-color: #0000EE;
+}
