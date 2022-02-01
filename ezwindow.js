@@ -31,19 +31,11 @@ class EZWindowManager
 
     findMaxZ()
     {
-        let max = null;
-        for (let i=0; i<this.winList.length; i++)
-        {
-            let win = this.winList[i];
-            if (max == null || max < parseInt(win.frame.style.zIndex))
-            {
-                max = parseInt(win.frame.style.zIndex)
-            }
-        }
-        if (max == null)
-            return 0;
-        else
-            return max;
+
+        return this.winList.length?
+            Math.max(...this.winList.map(win => parseInt(win.frame.style.zIndex)))
+            :
+            0;
     }
 
     moveToFront(id)
@@ -194,4 +186,5 @@ function create()
         "frame_id="+win.frame.id + ",<br>"
         + "zIndex="+win.frame.style.zIndex + ",<br>"
         + "count="+ezWindowManager.winList.length;
+
 }
