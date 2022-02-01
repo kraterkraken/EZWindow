@@ -119,11 +119,11 @@ class EZWindow
         this.frame.appendChild(this.titlebar);
         this.frame.appendChild(this.contentArea);
 
-        this.makeDraggable(this.frame.id, "ezwindow_titlebar");
+        this.makeDraggable(this.frame.id, "ezwindow_titlebar", "ezwindow_closebutton");
         ezWindowManager.addWindow(this);
     }
 
-    makeDraggable(id, targetClass)
+    makeDraggable(id, targetClass, avoidClass)
     {
         // dragee : the thing we want to drag
         // clickTarget : the child class of the dragee that needs to be
@@ -148,6 +148,8 @@ class EZWindow
         {
             e = e || window.event(); // I have no idea what this does
             e.preventDefault(); // I have a vague idea what this does
+
+            if (e.target.className == avoidClass) return;
 
             // remember where in the window we clicked
             clickX = e.offsetX;
