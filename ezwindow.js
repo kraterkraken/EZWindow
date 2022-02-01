@@ -67,6 +67,8 @@ Options could include things like:
 7) ask window manager to determine where it opens, instead of providing x, y
 8) dragability
 
+
+Possible Enhancement: METHOD TO ADD WIDGETS
 */
 
 
