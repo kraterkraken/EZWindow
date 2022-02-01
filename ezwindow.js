@@ -54,6 +54,23 @@ class EZWindowManager
 }
 const ezWindowManager = new EZWindowManager(); // the global instance of the manager
 
+/*
+Possible enhancement:  OPTIONS
+
+Options could include things like:
+1) what buttons appear in upper right corner (dismiss, maximize, minimize)
+2) modality
+3) whether or not to have a titlebar (or only a titlebar?)
+4) resizability
+5) dialog buttons (ok, cancel, yes, no, etc)
+6) some sort of callback for returning results via JSON
+7) ask window manager to determine where it opens, instead of providing x, y
+8) dragability
+
+*/
+
+
+
 class EZWindow
 {
     constructor(x, y, height, width, id, title)
