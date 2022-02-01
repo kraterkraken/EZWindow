@@ -149,7 +149,7 @@ class EZWindow
             e = e || window.event(); // I have no idea what this does
             e.preventDefault(); // I have a vague idea what this does
 
-            if (e.target.className == avoidClass) return;
+            if (avoidClass != null && e.target.className == avoidClass) return;
 
             // remember where in the window we clicked
             clickX = e.offsetX;
