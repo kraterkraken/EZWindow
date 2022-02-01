@@ -96,9 +96,7 @@ class EZWindow
             // might want to check if the window is "dirty"
             // before dismissing the window
 
-            // "this" is the button
-            // this.parent is the titlebar
-            // this.parent.parent is the frame
+            // "this" is the X button (aka, closeButton), therefore ...
             let frame = this.parentNode.parentNode;
             let doc = frame.parentNode;
 
