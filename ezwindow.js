@@ -122,7 +122,6 @@ class EZWindow
         this.contentArea.id = id + "_contentArea";
         this.contentArea.classList.add("ezwindow_contentarea");
         this.contentArea.style.flex = "1 1 auto";
-        this.contentArea.innerHTML = "ContentArea goes here";
 
         document.body.appendChild(this.frame);
         this.frame.appendChild(this.titlebar);
@@ -130,6 +129,11 @@ class EZWindow
 
         this.makeDraggable(this.frame.id, "ezwindow_titlebar", "ezwindow_closebutton");
         ezWindowManager.addWindow(this);
+    }
+
+    addContent(element)
+    {
+        this.contentArea.appendChild(element);
     }
 
     makeDraggable(id, targetClass, avoidClass)
@@ -201,9 +205,34 @@ function create()
 {
     let n = ezWindowManager.winList.length;
     win = new EZWindow(200, 200, 400, 350, "myWindowId_" + n, "Title Here!");
-    win.contentArea.innerHTML =
-        "frame_id="+win.frame.id + ",<br>"
-        + "zIndex="+win.frame.style.zIndex + ",<br>"
-        + "count="+ezWindowManager.winList.length;
+
+    blurb = document.createElement("p");
+    blurb.innerHTML = "Please Enter Your Stuff:";
+    blurb.class = "ezwindow_heading";
+
+    label1 = document.createElement("label");
+    label1.innerHTML = "Favorite Color:";
+    label1.class = "ezwindow_label";
+    textBox1 = document.createElement("input");
+    textBox1.type = "text";
+    textBox1.class = "ezwindow_input";
+
+    label2 = document.createElement("label");
+    label2.innerHTML = "Password:";
+    label2.class = "ezwindow_label";
+    textBox2 = document.createElement("input");
+    textBox2.type = "password";
+    textBox2.class = "ezwindow_input";
+
+    button1 = document.createElement("button");
+    button1.innerHTML = "Click This!";
+    button1.class = "ezwindow_button";
+
+    win.addContent(blurb);
+    win.addContent(label1);
+    win.addContent(textBox1);
+    win.addContent(label2);
+    win.addContent(textBox2);
+    win.addContent(button1);
 
 }

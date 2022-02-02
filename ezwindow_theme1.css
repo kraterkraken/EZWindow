@@ -42,3 +42,19 @@
 .ezwindow_closebutton:hover {
     background-color: #0000EE;
 }
+.ezwindow_label {
+    float: left;
+    clear: left;
+    width: 200px;
+    text-align: right;
+}
+.ezwindow_input {
+    float: left;
+}
+.ezwindow_button {
+    clear: left;
+}
+.ezwindow_heading {
+    font-size: 14px;
+    font-weight: bold;
+}
