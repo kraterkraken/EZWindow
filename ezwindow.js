@@ -23,22 +23,20 @@ class EZWindowManager
         {
             if (this.winList[i].frame.id == id)
             {
-                return this.winList[i];
+                return {win: this.winList[i], index: i};
             }
         }
-        return null;
+        return {win: null, index: -1};
     }
 
     removeWindow(id)
     {
-        for (let i=0; i < this.winList.length; i++)
+        let i = this.getWindowById(id).index;
+        if (i >= 0)
         {
-            if (this.winList[i].frame.id == id)
-            {
-                ezWindowManager.winList.splice(i, 1);
-            }
+            ezWindowManager.winList.splice(i, 1);
+            this.maxZ = this.findMaxZ();
         }
-        this.maxZ = this.findMaxZ();
     }
 
     findMaxZ()
@@ -52,7 +50,7 @@ class EZWindowManager
 
     moveToFront(id)
     {
-        let win = this.getWindowById(id);
+        let win = this.getWindowById(id).win;
         if (win && this.maxZ > parseInt(win.frame.style.zIndex))
         {
             this.maxZ++;
@@ -115,7 +113,7 @@ class EZWindow
             let doc = frame.parentNode;
 
             // prevent close if window dirty
-            let win = ezWindowManager.getWindowById(frame.id);
+            let win = ezWindowManager.getWindowById(frame.id).win;
             if (win.isDirty) return;  // TODO: warning first?
 
             ezWindowManager.removeWindow(frame.id);
