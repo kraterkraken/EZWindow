@@ -231,6 +231,8 @@ class EZWindow
                     var old_height = old_bottom - old_top;
                     var old_width = old_right - old_left;
 
+                    if (!frame.style.cursor.includes("-resize")) return;
+
                     let dir = frame.style.cursor.split('-')[0];
 
                     if (dir.includes("n"))
