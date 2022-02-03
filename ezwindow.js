@@ -52,15 +52,11 @@ class EZWindowManager
 
     moveToFront(id)
     {
-        for (let i=0; i<this.winList.length; i++)
+        let win = this.getWindowById(id);
+        if (win && this.maxZ > parseInt(win.frame.style.zIndex))
         {
-            if (this.winList[i].frame.id == id
-                && this.maxZ > parseInt(this.winList[i].frame.style.zIndex))
-            {
-                this.maxZ++;
-                this.winList[i].frame.style.zIndex = this.maxZ;
-                break;
-            }
+            this.maxZ++;
+            win.frame.style.zIndex = this.maxZ;
         }
     }
 }
