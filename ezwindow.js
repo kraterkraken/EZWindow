@@ -123,7 +123,7 @@ class EZWindow
 
             // prevent close if window dirty
             let win = ezWindowManager.getWindowById(frame.id);
-            if (win.isDirty return;  // TODO: warning first?
+            if (win.isDirty) return;  // TODO: warning first?
 
             ezWindowManager.removeWindow(frame.id);
             doc.removeChild(frame);
