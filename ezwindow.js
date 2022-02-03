@@ -149,6 +149,9 @@ class EZWindow
         let frame = this.frame; // because "this" won't work in event handlers
 
         this.frame.onmousemove = function(e) {
+            e = e || window.event(); // I have no idea what this does
+            e.preventDefault(); // I have a vague idea what this does
+
             if (e.target.className == "ezwindow_frame")
             {
                 // need to change the arrow to the resizer arrow
@@ -177,6 +180,9 @@ class EZWindow
         }
 
         this.frame.onmousedown = function(e) {
+            e = e || window.event(); // I have no idea what this does
+            e.preventDefault(); // I have a vague idea what this does
+
             ezWindowManager.moveToFront(this.id);
             console.log("target class name ="+e.target.className);
             if (e.target.className == "ezwindow_titlebar")
@@ -215,6 +221,9 @@ class EZWindow
                 document.onmouseup = stopResizing;
                 function resizeIt(e)
                 {
+                    e = e || window.event(); // I have no idea what this does
+                    e.preventDefault(); // I have a vague idea what this does
+
                     var old_top = frame.getBoundingClientRect().top;
                     var old_bottom = frame.getBoundingClientRect().bottom;
                     var old_left = frame.getBoundingClientRect().left;
@@ -247,6 +256,9 @@ class EZWindow
                 }
                 function stopResizing(e)
                 {
+                    e = e || window.event(); // I have no idea what this does
+                    e.preventDefault(); // I have a vague idea what this does
+
                     document.onmousemove = null;
                     document.onmouseup = null;
                 }
