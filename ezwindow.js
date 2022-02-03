@@ -241,13 +241,11 @@ class EZWindow
                     if (dir.includes("e"))
                     {
                         frame.style.width = (old_width + e.movementX) + "px";
-
                     }
                     if (dir.includes("w"))
                     {
                         frame.style.left =  (old_left + e.movementX) + "px"
                         frame.style.width = (old_width - e.movementX) + "px";
-
                     }
                 }
                 function stopResizing(e)
