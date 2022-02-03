@@ -101,9 +101,6 @@ class EZWindow
         this.frame.style.position = "absolute";
         this.frame.style.display = "flex"; /* only easy way to get contentarea to fill the window */
         this.frame.style.flexFlow = "column"; /* only easy way to get contentarea to fill the window */
-        this.frame.onmousedown = function(e) {
-            ezWindowManager.moveToFront(this.id);
-        }
 
         this.titlebar = document.createElement("div");
         this.titlebar.id = id + "_titlebar";
@@ -138,8 +135,7 @@ class EZWindow
         this.frame.appendChild(this.titlebar);
         this.frame.appendChild(this.contentArea);
 
-        //this.makeResizeable(this.frame.id);
-        this.makeDraggable(this.frame.id, "ezwindow_titlebar", "ezwindow_closebutton");
+        this.setupMouseHandlers();
         ezWindowManager.addWindow(this);
     }
 
@@ -148,173 +144,118 @@ class EZWindow
         this.contentArea.appendChild(element);
     }
 
-    makeResizeable(id)
+    setupMouseHandlers()
     {
-        var resizee = document.getElementById(id);
-        if (resizee == null) return;
-        /*******************************************************************/
-        resizee.onmouseover = changePointer;
-        resizee.onmousedown = startResize;
-        /*******************************************************************/
+        let frame = this.frame; // because "this" won't work in event handlers
 
-        function changePointer(e)
-        {
-            posX
-        }
-        function allowResize(e)
-        {
-            e = e || window.event(); // I have no idea what this does
-            e.preventDefault(); // I have a vague idea what this does
-
-            // if the target is NOT the resizee, bail out because we are hovering
-            // over one of resizee's children
-            console.log("target.id=" + e.target.id);
-            console.log("currenttarget.id=" + e.currentTarget.id);
-            console.log("resizee.id=" + resizee.id);
-            if (e.target.id != resizee.id) return;
-
-            console.log("allowResize");
-            if (isResizing) return;
-
-            var oldMouseDownHandler = this.onmousedown;
-            this.onmousedown = startResize;
-            this.style.cursor = "n-resize"; // test
-        }
-        function disallowResize(e)
-        {
-            e = e || window.event(); // I have no idea what this does
-            e.preventDefault(); // I have a vague idea what this does
-
-            console.log("disallowResize");
-            if (isResizing) return;
-
-            document.onmousemove = null;
-            document.onmouseup = null;
-            this.onmousedown = oldMouseDownHandler;
-        }
-        function startResize(e)
-        {
-            e = e || window.event(); // I have no idea what this does
-            e.preventDefault(); // I have a vague idea what this does
-
-            isResizing = true;
-
-            // remember where in the window we clicked
-            console.log("startResize: left="+resizee.style.left+", top="+resizee.style.top);
-
-            // **DOCUMENT** must start listening to mouse move events
-            // and mouse up events
-            document.onmousemove = resizeIt;
-            document.onmouseup = stopResizing;
-        }
-        function resizeIt(e)
-        {
-            console.log("resizeIt: cursor="+resizee.style.cursor);
-            console.log("resizeIt: e.clientX="+e.clientX);
-            console.log("resizeIt: e.clientY="+e.clientY);
-            console.log("resizeIt: e.movementX="+e.movementX);
-            console.log("resizeIt: e.movementY="+e.movementY);
-            console.log("resizeIt: width="+resizee.style.width);
-            console.log("resizeIt: height="+resizee.style.height);
-            console.log("resizeIt: clientrect.left="+resizee.getBoundingClientRect().left);
-            console.log("resizeIt: clientrect.right="+resizee.getBoundingClientRect().right);
-            console.log("resizeIt: clientrect.top="+resizee.getBoundingClientRect().top);
-            console.log("resizeIt: clientrect.bottom="+resizee.getBoundingClientRect().bottom);
-
-            var old_top = resizee.getBoundingClientRect().top;
-            var old_bottom = resizee.getBoundingClientRect().bottom;
-            var old_height = old_bottom - old_top;
-
-            // based on which cursor we have, start changing the size
-            if (resizee.style.cursor == "n-resize")
+        this.frame.onmousemove = function(e) {
+            if (e.target.className == "ezwindow_frame")
             {
-                resizee.style.top =  (old_top + e.movementY) + "px"
-                resizee.style.height = (old_height - e.movementY) + "px";
+                // need to change the arrow to the resizer arrow
+                let top = frame.getBoundingClientRect().top;
+                let left = frame.getBoundingClientRect().left;
+                let bottom = frame.getBoundingClientRect().bottom;
+                let right = frame.getBoundingClientRect().right;
+
+                console.log(top + " " +left + " " + bottom + " " + right);
+                console.log("---- " + e.clientX + " " + e.clientY);
+
+                let dir = "";
+                if (top < e.clientY && e.clientY < top+25)
+                    dir += "n";
+                else if (bottom > e.clientY && e.clientY > bottom-25)
+                    dir += "s";
+
+                if (left < e.clientX && e.clientX < left+25)
+                    dir += "w";
+                else if (right > e.clientX && e.clientX > right-25)
+                    dir += "e";
+
+                if (dir != "")
+                    frame.style.cursor = dir + "-resize";
             }
-            // else if (resizee.style.cursor == "s-resize")
-            // {
-            //     // only need to change the height
-            //     resizee.style.height = e.clientY + "px";
-            // }
-            // else if (resizee.style.cursor = "e-resize")
-            // {
-            //     // only need to change width
-            //     resizee.style.width = e.clientX + "px";
-            // }
-            // else if (resizee.style.cursor = "w-resize")
-            // {
-            //     resizee.style.left = e.clientX - clickX + "px";
-            //
-            // }
         }
-        function stopResizing(e)
-        {
-            e = e || window.event(); // I have no idea what this does
-            e.preventDefault(); // I have a vague idea what this does
 
-            isResizing = false;
-            document.onmousemove = null;
-            document.onmouseup = null;
-            this.onmousedown = oldMouseDownHandler;
+        this.frame.onmousedown = function(e) {
+            ezWindowManager.moveToFront(this.id);
+            console.log("target class name ="+e.target.className);
+            if (e.target.className == "ezwindow_titlebar")
+            {
+                // mousedown on titlebar, so start drag
+                document.onmousemove = dragIt;
+                document.onmouseup = stopDragging;
+                function dragIt(e)
+                {
+                    e = e || window.event(); // I have no idea what this does
+                    e.preventDefault(); // I have a vague idea what this does
+
+                    // move the window to the new location
+                    var old_left = frame.getBoundingClientRect().left;
+                    var old_top = frame.getBoundingClientRect().top;
+                    frame.style.left = (old_left + e.movementX) + "px";
+                    frame.style.top = (old_top + e.movementY) + "px";
+
+                }
+                function stopDragging(e)
+                {
+                    e = e || window.event(); // I have no idea what this does
+                    e.preventDefault(); // I have a vague idea what this does
+
+                    // the mouse is up, so we are no longer moving the window
+                    // therefore the document no longer should be listening
+                    // for these events
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                }
+            }
+            else if (e.target.className == "ezwindow_frame")
+            {
+                // mousedown on frame and nothing else, so start resize
+                document.onmousemove = resizeIt;
+                document.onmouseup = stopResizing;
+                function resizeIt(e)
+                {
+                    var old_top = frame.getBoundingClientRect().top;
+                    var old_bottom = frame.getBoundingClientRect().bottom;
+                    var old_left = frame.getBoundingClientRect().left;
+                    var old_right = frame.getBoundingClientRect().right;
+                    var old_height = old_bottom - old_top;
+                    var old_width = old_right - old_left;
+
+                    let dir = frame.style.cursor.split('-')[0];
+
+                    if (dir.includes("n"))
+                    {
+                        frame.style.top =  (old_top + e.movementY) + "px"
+                        frame.style.height = (old_height - e.movementY) + "px";
+                    }
+                    if (dir.includes("s"))
+                    {
+                        frame.style.height = (old_height + e.movementY) + "px";
+                    }
+                    if (dir.includes("e"))
+                    {
+                        frame.style.width = (old_width + e.movementX) + "px";
+
+                    }
+                    if (dir.includes("w"))
+                    {
+                        frame.style.left =  (old_left + e.movementX) + "px"
+                        frame.style.width = (old_width - e.movementX) + "px";
+
+                    }
+                }
+                function stopResizing(e)
+                {
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                }
+            }
+
         }
+
     }
 
-    makeDraggable(id, targetClass, avoidClass)
-    {
-        // dragee : the thing we want to drag
-        // clickTarget : the child class of the dragee that needs to be
-        //               clicked in order to start dragging the dragee
-        //               (if clickTarget not specified, the target is
-        //                is just the dragee)
-        let dragee = document.getElementById(id);
-        if (dragee == null) return;
-
-        let clickTarget = dragee;
-        if (targetClass != null)
-        {
-            clickTarget = dragee.querySelector("." + targetClass);
-            if (clickTarget == null) return;
-        }
-
-        clickTarget.onmousedown = startDragging;
-
-        function startDragging(e)
-        {
-            e = e || window.event(); // I have no idea what this does
-            e.preventDefault(); // I have a vague idea what this does
-
-            if (avoidClass != null && e.target.className == avoidClass) return;
-
-            // **DOCUMENT** must now start handling mouse up/move events
-            document.onmousemove = dragIt;
-            document.onmouseup = stopDragging;
-        }
-
-        function dragIt(e)
-        {
-            e = e || window.event(); // I have no idea what this does
-            e.preventDefault(); // I have a vague idea what this does
-
-            // move the window to the new location
-            var old_left = dragee.getBoundingClientRect().left;
-            var old_top = dragee.getBoundingClientRect().top;
-            dragee.style.left = (old_left + e.movementX) + "px";
-            dragee.style.top = (old_top + e.movementY) + "px";
-
-        }
-
-        function stopDragging(e)
-        {
-            e = e || window.event(); // I have no idea what this does
-            e.preventDefault(); // I have a vague idea what this does
-
-            // the mouse is up, so we are no longer moving the window
-            // therefore the document no longer should be listening
-            // for these events
-            document.onmousemove = null;
-            document.onmouseup = null;
-        }
-    }
 }
 
 var win = null;
