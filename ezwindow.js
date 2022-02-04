@@ -11,14 +11,18 @@ class EZWindowManager
 
     addWindow(win)
     {
+        // adds a window to the list, and keeps track of the max zIndex
         this.winList.push(win);
         this.maxZ++;
         win.frame.style.zIndex = this.maxZ;
-        return this.winList.length - 1; // return the index of the newly added window
+        return;
     }
 
     getWindowById(id)
     {
+        // searches for the window with the given id.
+        // if found, returns the window and its index in an object {win, index}.
+        // if not found, returns null for the window, and -1 for the index
         for (let i=0; i < this.winList.length; i++)
         {
             if (this.winList[i].frame.id == id)
@@ -31,6 +35,7 @@ class EZWindowManager
 
     removeWindow(id)
     {
+        // removes a window from the list and recalculates the max zIndex
         let i = this.getWindowById(id).index;
         if (i >= 0)
         {
@@ -41,7 +46,7 @@ class EZWindowManager
 
     findMaxZ()
     {
-
+        // finds the highest zIndex value in the list of windows
         return this.winList.length?
             Math.max(...this.winList.map(win => parseInt(win.frame.style.zIndex)))
             :
@@ -50,6 +55,8 @@ class EZWindowManager
 
     moveToFront(id)
     {
+        // moves the window with the given id to the front by giving it
+        // a zIndex higher than all the others
         let win = this.getWindowById(id).win;
         if (win && this.maxZ > parseInt(win.frame.style.zIndex))
         {
@@ -74,8 +81,6 @@ Options could include things like:
 8) dragability
 
 */
-
-
 
 class EZWindow
 {
@@ -107,18 +112,6 @@ class EZWindow
         this.closeButton.style.display = "inline-block";
         this.closeButton.innerHTML = "&#10006"; // symbolic X shape for the window close button
         this.titlebar.appendChild(this.closeButton);
-        this.closeButton.onclick = function(e){
-            // "this" is the X button (aka, closeButton), therefore ...
-            let frame = this.parentNode.parentNode;
-            let doc = frame.parentNode;
-
-            // prevent close if window dirty
-            let win = ezWindowManager.getWindowById(frame.id).win;
-            if (win.isDirty) return;  // TODO: warning first?
-
-            ezWindowManager.removeWindow(frame.id);
-            doc.removeChild(frame);
-        }
 
         this.contentArea = document.createElement("div");
         this.contentArea.id = id + "_contentArea";
@@ -142,21 +135,39 @@ class EZWindow
     {
         let frame = this.frame; // because "this" won't work in event handlers
 
+        ////////////////////////////////////////////////////////////////////////
+        //          CLOSE BUTTON - ONCLICK (close the window)
+        ////////////////////////////////////////////////////////////////////////
+        this.closeButton.onclick = function(e){
+            // "this" is the X button (aka, closeButton), therefore ...
+            let frame = this.parentNode.parentNode;
+            let doc = frame.parentNode;
+
+            // prevent close if window dirty
+            let win = ezWindowManager.getWindowById(frame.id).win;
+            if (win.isDirty) return;  // TODO: warning first?
+
+            ezWindowManager.removeWindow(frame.id);
+            doc.removeChild(frame);
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+        //          FRAME - ONMOUSEMOVE (mouse cursor changes)
+        ////////////////////////////////////////////////////////////////////////
         this.frame.onmousemove = function(e) {
             e = e || window.event(); // I have no idea what this does
             e.preventDefault(); // I have a vague idea what this does
 
+            // ................. MOUSE CURSOR SET UP .................
             if (e.target.className == "ezwindow_frame")
             {
-                // need to change the arrow to the resizer arrow
+                // need to change the mouse cursor to the resizer arrow(s)
                 let top = frame.getBoundingClientRect().top;
                 let left = frame.getBoundingClientRect().left;
                 let bottom = frame.getBoundingClientRect().bottom;
                 let right = frame.getBoundingClientRect().right;
 
-                console.log(top + " " +left + " " + bottom + " " + right);
-                console.log("---- " + e.clientX + " " + e.clientY);
-
+                // the following handles all 8 cases: n, s, e, w, ne, nw, se, sw
                 let dir = "";
                 if (top < e.clientY && e.clientY < top+25)
                     dir += "n";
@@ -171,17 +182,20 @@ class EZWindow
                 if (dir != "")
                     frame.style.cursor = dir + "-resize";
             }
-        }
+        } // end onmousemove block
 
+        ////////////////////////////////////////////////////////////////////////
+        //          FRAME - ONMOUSEDOWN (dragging / resizing)
+        ////////////////////////////////////////////////////////////////////////
         this.frame.onmousedown = function(e) {
             e = e || window.event(); // I have no idea what this does
             e.preventDefault(); // I have a vague idea what this does
-
             ezWindowManager.moveToFront(this.id);
-            console.log("target class name ="+e.target.className);
+
+            // ................. DRAGGING .................
             if (e.target.className == "ezwindow_titlebar")
             {
-                // mousedown on titlebar, so start drag
+                // mousedown on titlebar, so initialize drag
                 document.onmousemove = dragIt;
                 document.onmouseup = stopDragging;
                 function dragIt(e)
@@ -208,9 +222,11 @@ class EZWindow
                     document.onmouseup = null;
                 }
             }
+
+            // ................. RESIZING .................
             else if (e.target.className == "ezwindow_frame")
             {
-                // mousedown on frame and nothing else, so start resize
+                // mousedown on frame and nothing else, so initialize resize
                 document.onmousemove = resizeIt;
                 document.onmouseup = stopResizing;
                 function resizeIt(e)
@@ -256,13 +272,10 @@ class EZWindow
                     document.onmousemove = null;
                     document.onmouseup = null;
                 }
-            }
-
-        }
-
-    }
-
-}
+            } // end resize block
+        } // end onmousedown block
+    } // end setupMouseHandlers
+} // end class EZWindow
 
 var win = null;
 
