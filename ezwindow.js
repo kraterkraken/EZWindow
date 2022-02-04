@@ -79,6 +79,7 @@ Options could include things like:
 6) some sort of callback for returning results via JSON
 7) ask window manager to determine where it opens, instead of providing x, y
 8) dragability
+9) min size
 
 */
 
