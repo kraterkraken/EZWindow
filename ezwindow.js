@@ -140,16 +140,12 @@ class EZWindow
         //          CLOSE BUTTON - ONCLICK (close the window)
         ////////////////////////////////////////////////////////////////////////
         this.closeButton.onclick = function(e){
-            // "this" is the X button (aka, closeButton), therefore ...
-            let frame = this.parentNode.parentNode;
-            let doc = frame.parentNode;
-
-            // prevent close if window dirty
+            // close/X button clicked, so close the window if not dirty
             let win = ezWindowManager.getWindowById(frame.id).win;
             if (win.isDirty) return;  // TODO: warning first?
 
             ezWindowManager.removeWindow(frame.id);
-            doc.removeChild(frame);
+            frame.parentNode.removeChild(frame);
         }
 
         ////////////////////////////////////////////////////////////////////////
