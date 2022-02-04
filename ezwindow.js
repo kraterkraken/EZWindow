@@ -76,7 +76,7 @@ Options could include things like:
 3) whether or not to have a titlebar (or only a titlebar?)
 4) resizability
 5) dialog buttons (ok, cancel, yes, no, etc)
-6) some sort of callback for returning results via JSON
+6) call back for loading data =AND= callback for returning/saving data
 7) ask window manager to determine where it opens, instead of providing x, y
 8) dragability
 9) min size
