@@ -1,7 +1,7 @@
 .ezwindow_frame {
     color: black;
     background-color: lightgray;
-    box-shadow: 10px 10px 9px gray;
+    box-shadow: 2px 6px 18px 0px black; /* xoff, yoff, blur, spread, color */
     padding: 4px 4px 4px 4px; /* sets up the resizable window border */
     border: 1px solid black; /* just for testing */
     border-radius: 9px;
