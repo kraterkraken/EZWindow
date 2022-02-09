@@ -16,6 +16,7 @@ body { background-color: white;}
     background-color: yellow;
 }
 .ezwindow_frame {
+    font-family: sans-serif;
     color: black;
     background-color: lightgray;
     box-shadow: 2px 6px 18px 0px black; /* xoff, yoff, blur, spread, color */
@@ -26,12 +27,14 @@ body { background-color: white;}
 .ezwindow_titlebar {
     color: white;
     background-color: #000099;
+    font-size: 20px;
     text-align: center;
     cursor: default;
     height: 25px;
     line-height: 25px; /* this centers the text vertically */
     padding-left: 4px;
     padding-right: 4px;
+    padding-top: 0px;
     border-style: solid;
     border-color: black;
     border-width: 1px 1px 0px 1px;
@@ -45,10 +48,12 @@ body { background-color: white;}
     border-color: black;
     border-width: 0px 1px 1px 1px;
     border-radius: 0px 0px 9px 9px;
-
+    padding-left: 0px;
+    padding-right: 0px;
 }
 .ezwindow_closebutton {
     color: white;
+    font-size: 10px;
     font-family: sans-serif;
     font-weight: bold;
     background-color: #000099;
