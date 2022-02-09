@@ -152,11 +152,12 @@ class EZWindow
         //          FRAME - ONMOUSEMOVE (mouse cursor changes)
         ////////////////////////////////////////////////////////////////////////
         this.frame.onmousemove = function(e) {
-            e.preventDefault(); // I have a vague idea what this does
 
             // ................. MOUSE CURSOR SET UP .................
             if (e.target.className == "ezwindow_frame")
             {
+                e.preventDefault();
+
                 // need to change the mouse cursor to the resizer arrow(s)
                 let top = frame.getBoundingClientRect().top;
                 let left = frame.getBoundingClientRect().left;
@@ -184,12 +185,13 @@ class EZWindow
         //          FRAME - ONMOUSEDOWN (dragging / resizing)
         ////////////////////////////////////////////////////////////////////////
         this.frame.onmousedown = function(e) {
-            e.preventDefault(); // I have a vague idea what this does
             ezWindowManager.moveToFront(this.id);
 
             // ................. DRAGGING .................
             if (e.target.className == "ezwindow_titlebar")
             {
+                e.preventDefault();
+
                 // mousedown on titlebar, so initialize drag
                 document.onmousemove = dragIt;
                 document.onmouseup = stopDragging;
@@ -219,6 +221,8 @@ class EZWindow
             // ................. RESIZING .................
             else if (e.target.className == "ezwindow_frame")
             {
+                e.preventDefault();
+
                 // mousedown on frame and nothing else, so initialize resize
                 document.onmousemove = resizeIt;
                 document.onmouseup = stopResizing;
