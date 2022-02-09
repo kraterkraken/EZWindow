@@ -152,7 +152,6 @@ class EZWindow
         //          FRAME - ONMOUSEMOVE (mouse cursor changes)
         ////////////////////////////////////////////////////////////////////////
         this.frame.onmousemove = function(e) {
-            e = e || window.event(); // I have no idea what this does
             e.preventDefault(); // I have a vague idea what this does
 
             // ................. MOUSE CURSOR SET UP .................
@@ -185,7 +184,6 @@ class EZWindow
         //          FRAME - ONMOUSEDOWN (dragging / resizing)
         ////////////////////////////////////////////////////////////////////////
         this.frame.onmousedown = function(e) {
-            e = e || window.event(); // I have no idea what this does
             e.preventDefault(); // I have a vague idea what this does
             ezWindowManager.moveToFront(this.id);
 
@@ -197,7 +195,6 @@ class EZWindow
                 document.onmouseup = stopDragging;
                 function dragIt(e)
                 {
-                    e = e || window.event(); // I have no idea what this does
                     e.preventDefault(); // I have a vague idea what this does
 
                     // move the window to the new location
@@ -209,7 +206,6 @@ class EZWindow
                 }
                 function stopDragging(e)
                 {
-                    e = e || window.event(); // I have no idea what this does
                     e.preventDefault(); // I have a vague idea what this does
 
                     // the mouse is up, so we are no longer moving the window
@@ -228,7 +224,6 @@ class EZWindow
                 document.onmouseup = stopResizing;
                 function resizeIt(e)
                 {
-                    e = e || window.event(); // I have no idea what this does
                     e.preventDefault(); // I have a vague idea what this does
 
                     var old_top = frame.getBoundingClientRect().top;
@@ -263,7 +258,6 @@ class EZWindow
                 }
                 function stopResizing(e)
                 {
-                    e = e || window.event(); // I have no idea what this does
                     e.preventDefault(); // I have a vague idea what this does
 
                     document.onmousemove = null;
