@@ -197,7 +197,7 @@ class EZWindow
                 document.onmouseup = stopDragging;
                 function dragIt(e)
                 {
-                    e.preventDefault(); // I have a vague idea what this does
+                    e.preventDefault();
 
                     // move the window to the new location
                     var old_left = frame.getBoundingClientRect().left;
@@ -208,7 +208,7 @@ class EZWindow
                 }
                 function stopDragging(e)
                 {
-                    e.preventDefault(); // I have a vague idea what this does
+                    e.preventDefault();
 
                     // the mouse is up, so we are no longer moving the window
                     // therefore the document no longer should be listening
@@ -228,7 +228,7 @@ class EZWindow
                 document.onmouseup = stopResizing;
                 function resizeIt(e)
                 {
-                    e.preventDefault(); // I have a vague idea what this does
+                    e.preventDefault();
 
                     var old_top = frame.getBoundingClientRect().top;
                     var old_bottom = frame.getBoundingClientRect().bottom;
@@ -262,7 +262,7 @@ class EZWindow
                 }
                 function stopResizing(e)
                 {
-                    e.preventDefault(); // I have a vague idea what this does
+                    e.preventDefault();
 
                     document.onmousemove = null;
                     document.onmouseup = null;
