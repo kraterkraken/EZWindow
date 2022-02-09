@@ -1,10 +1,74 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="ezwindow.js"></script>
-        <link rel="stylesheet" href="ezwindow_theme1.css">
     </head>
     <body>
-      <button onclick="create();">click me</button>
+        <select id="theme" onchange="changeTheme();">
+            <option selected value="">--- Select a window theme ---</option>
+            <option value="ezwindow_theme1.css">Old School</option>
+            <option value="ezwindow_theme2.css">Mean Green</option>
+        </select>
+      <button onclick="create();">Launch a window</button>
+
+      <script src="ezwindow.js"></script>
+      <script>
+        function changeTheme()
+        {
+            let themebox = document.getElementById("theme");
+            let csslink = document.getElementById("stylesheet");
+            if (csslink !== null && themebox.value != "")
+            {
+                // unload old theme
+                csslink.disabled = true;
+                document.parentNode.removeChild(csslink);
+                csslink.href = "data:text/css";
+
+            }
+
+            // load new theme
+            let newcsslink = document.createElement("link");
+            newcsslink.setAttribute("rel", "stylesheet");
+            newcsslink.setAttribute("href", themebox.value);
+            document.getElementsByTagName("head")[0].appendChild(newcsslink);
+        }
+
+        var win = null;
+
+        function create()
+        {
+            let n = ezWindowManager.winList.length;
+            win = new EZWindow(200, 200, 400, 350, "myWindowId_" + n, "Title Here!");
+
+            blurb = document.createElement("p");
+            blurb.innerHTML = "Please Enter Your Stuff:";
+            blurb.class = "ezwindow_heading";
+
+            label1 = document.createElement("label");
+            label1.innerHTML = "Favorite Color:";
+            label1.class = "ezwindow_label";
+            textBox1 = document.createElement("input");
+            textBox1.type = "text";
+            textBox1.class = "ezwindow_input";
+
+            label2 = document.createElement("label");
+            label2.innerHTML = "Password:";
+            label2.class = "ezwindow_label";
+            textBox2 = document.createElement("input");
+            textBox2.type = "password";
+            textBox2.class = "ezwindow_input";
+
+            button1 = document.createElement("button");
+            button1.innerHTML = "Click This!";
+            button1.class = "ezwindow_button";
+
+            win.addContent(blurb);
+            win.addContent(label1);
+            win.addContent(textBox1);
+            win.addContent(label2);
+            win.addContent(textBox2);
+            win.addContent(button1);
+
+        }
+      </script>
     </body>
 </html>
