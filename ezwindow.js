@@ -1,4 +1,4 @@
-class EZWindowManager
+ class EZWindowManager
 {
     // This class keeps track of any windows that are open.  It manages
     // things like the zIndex of each window and where they open, as well
@@ -168,12 +168,12 @@ class EZWindow
                 let dir = "";
                 if (top < e.clientY && e.clientY < top+25)
                     dir += "n";
-                else if (bottom > e.clientY && e.clientY > bottom-25)
+                else if (bottom-25 < e.clientY && e.clientY < bottom)
                     dir += "s";
 
                 if (left < e.clientX && e.clientX < left+25)
                     dir += "w";
-                else if (right > e.clientX && e.clientX > right-25)
+                else if (right-25 < e.clientX && e.clientX < right)
                     dir += "e";
 
                 if (dir != "")
